@@ -503,9 +503,13 @@ NSString *const errorMethod = @"error";
 
       _lastVideoSampleTime = currentSampleTime;
 
-      CVPixelBufferRef nextBuffer = CMSampleBufferGetImageBuffer(sampleBuffer);
-      CMTime nextSampleTime = CMTimeSubtract(_lastVideoSampleTime, _videoTimeOffset);
-      [_videoAdaptor appendPixelBuffer:nextBuffer withPresentationTime:nextSampleTime];
+      // CVPixelBufferRef nextBuffer = CMSampleBufferGetImageBuffer(sampleBuffer);
+      // CMTime nextSampleTime = CMTimeSubtract(_lastVideoSampleTime, _videoTimeOffset);
+      // [_videoAdaptor appendPixelBuffer:nextBuffer withPresentationTime:nextSampleTime];
+
+      if (_videoWriterInput.readyForMoreMediaData) { [_videoWriterInput appendSampleBuffer:sampleBuffer]; }
+
+      
     } else {
       CMTime dur = CMSampleBufferGetDuration(sampleBuffer);
 
@@ -1056,6 +1060,7 @@ NSString *const errorMethod = @"error";
     [self.captureDevice setTorchMode:AVCaptureTorchModeOn];
     [self.captureDevice unlockForConfiguration];
   }
+  _videoWriter. ShouldOptimizeForNetworkUse = true;
 
   [_videoWriter addInput:_videoWriterInput];
 
