@@ -757,8 +757,10 @@ class Camera
         cameraFeatureFactory.createAutoFocusFeature(cameraProperties, true));
     recordingVideo = true;
     try {
-      createCaptureSession(
-          CameraDevice.TEMPLATE_RECORD, () -> mediaRecorder.start(), mediaRecorder.getSurface());
+      // createCaptureSession(
+      //     CameraDevice.TEMPLATE_RECORD, () -> mediaRecorder.start(), mediaRecorder.getSurface());
+      createCaptureSession( CameraDevice.TEMPLATE_RECORD, () -> mediaRecorder.start(), mediaRecorder.getSurface(),imageStreamReader.getSurface());
+
       result.success(null);
     } catch (CameraAccessException e) {
       recordingVideo = false;
@@ -1078,7 +1080,13 @@ class Camera
 
   public void startPreviewWithImageStream(EventChannel imageStreamChannel)
       throws CameraAccessException {
-    createCaptureSession(CameraDevice.TEMPLATE_RECORD, imageStreamReader.getSurface());
+    // createCaptureSession(CameraDevice.TEMPLATE_RECORD, imageStreamReader.getSurface());
+    if (mediaRecorder != null) { 
+      createCaptureSession(CameraDevice.TEMPLATE_RECORD, imageStreamReader.getSurface(), mediaRecorder.getSurface()); 
+    } else { 
+      createCaptureSession(CameraDevice.TEMPLATE_RECORD, imageStreamReader.getSurface()); 
+    }
+
     Log.i(TAG, "startPreviewWithImageStream");
 
     imageStreamChannel.setStreamHandler(
