@@ -509,7 +509,7 @@ NSString *const errorMethod = @"error";
 
       if (_videoWriterInput.readyForMoreMediaData) { [_videoWriterInput appendSampleBuffer:sampleBuffer]; }
 
-      
+
     } else {
       CMTime dur = CMSampleBufferGetDuration(sampleBuffer);
 
@@ -1018,11 +1018,40 @@ NSString *const errorMethod = @"error";
     [_methodChannel invokeMethod:errorMethod arguments:error.description];
     return NO;
   }
+    CGSize size = [UIScreen mainScreen].bounds.size;
+    CGFloat scale = [UIScreen mainScreen].scale;
+
+    NSDictionary *videoOutputSettings = @{
+                              AVVideoCodecKey: AVVideoCodecTypeH264,
+                              AVVideoScalingModeKey : AVVideoScalingModeResizeAspectFill,
+                              AVVideoWidthKey: @(size.width * scale),
+                              AVVideoHeightKey: @(size.height * scale),
+                        
+                              AVVideoCompressionPropertiesKey: @{
+                                      AVVideoAverageBitRateKey: [NSNumber numberWithInt:3000000],
+                                      //AVVideoProfileLevelKey: AVVideoProfileLevelH264Baseline30,
+                                      }
+                              };
+ 
+//    NSDictionary *videoOutputSettings = @{
+//                              AVVideoCodecKey: AVVideoCodecTypeH264,
+//                              AVVideoWidthKey: [NSNumber numberWithInt:1080],
+//                              AVVideoHeightKey: [NSNumber numberWithInt:1920],
+//                              AVVideoCompressionPropertiesKey: @{
+//                                      AVVideoAverageBitRateKey: [NSNumber numberWithInt:3000000],
+    
+//                                      AVVideoProfileLevelKey: AVVideoProfileLevelH264Baseline30,
+//                                      }
+//                              };
+
 
   NSDictionary *videoSettings = [_captureVideoOutput
-      recommendedVideoSettingsForAssetWriterWithOutputFileType:AVFileTypeMPEG4];
+                                 
+       recommendedVideoSettingsForVideoCodecType:AVVideoCodecTypeH264
+                                 assetWriterOutputFileType:AVFileTypeMPEG4
+  ];
   _videoWriterInput = [AVAssetWriterInput assetWriterInputWithMediaType:AVMediaTypeVideo
-                                                         outputSettings:videoSettings];
+                                                         outputSettings:videoOutputSettings];
 
   _videoAdaptor = [AVAssetWriterInputPixelBufferAdaptor
       assetWriterInputPixelBufferAdaptorWithAssetWriterInput:_videoWriterInput
