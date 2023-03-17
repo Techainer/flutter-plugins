@@ -7,6 +7,7 @@
 #  * https://github.com/flutter/cocoon/blob/main/CI_YAML.md
 enabled_branches:
   - main
+  - develop_longnv_savis
 
 platform_properties:
   linux:
