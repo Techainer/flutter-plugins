@@ -826,8 +826,8 @@ class Camera
         } catch (CameraAccessException | IllegalStateException e) {
             try {
                 startPreview();
-            } catch (CameraAccessException | IllegalStateException e) {
-                result.error("videoRecordingFailed", e.getMessage(), null);
+            } catch (CameraAccessException | IllegalStateException ex) {
+                result.error("videoRecordingFailed", ex.getMessage(), null);
                 return;
             }
             result.error("videoRecordingFailed", e.getMessage(), null);
