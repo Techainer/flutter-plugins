@@ -14,38 +14,34 @@ flutter:
   plugin:
     platforms:
       android:
-        default_package: camera_android
+        package: io.flutter.plugins.camera
+        pluginClass: CameraPlugin
       ios:
-        default_package: camera_avfoundation
+        pluginClass: CameraPlugin
       web:
         default_package: camera_web
 
 dependencies:
-#  camera_android:
-#      git:
-#        url: https://github.com/Techainer/flutter-plugins.git
-#        ref: develop_longnv_savis_new
-#        path: packages/camera/camera_android
-#  camera_avfoundation:
-#    git:
-#      url: https://github.com/Techainer/flutter-plugins.git
-#      ref: develop_longnv_savis_new
-#      path: packages/camera/camera_avfoundation
-#  camera_web:
-#      git:
-#        url: https://github.com/Techainer/flutter-plugins.git
-#        ref: develop_longnv_savis_new
-#        path: packages/camera/camera_web
+  #  camera_android:
+  #      git:
+  #        url: https://github.com/Techainer/flutter-plugins.git
+  #        ref: develop_longnv_savis_new
+  #        path: packages/camera/camera_android
+  #  camera_avfoundation:
+  #    git:
+  #      url: https://github.com/Techainer/flutter-plugins.git
+  #      ref: develop_longnv_savis_new
+  #      path: packages/camera/camera_avfoundation
+  camera_web:
+    git:
+      url: https://github.com/Techainer/flutter-plugins.git
+      ref: develop_longnv_savis_new
+      path: packages/camera/camera_web
   camera_platform_interface:
     git:
       url: https://github.com/Techainer/flutter-plugins.git
       ref: develop_longnv_savis_new
       path: packages/camera/camera_platform_interface
-#  camera_web:
-#    git:
-#      url: https://github.com/Techainer/flutter-plugins.git
-#      ref: develop_longnv_savis_new
-#      path: packages/camera/camera_web
   flutter:
     sdk: flutter
   flutter_plugin_android_lifecycle: ^2.0.2
