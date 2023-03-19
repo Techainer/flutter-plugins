@@ -21,7 +21,7 @@ dependencies:
     git:
       url: https://github.com/Techainer/flutter-plugins.git
       ref: develop_longnv_savis_new
-      path: packages/camera/camera_platform_interfacec
+      path: packages/camera/camera_platform_interface
   flutter:
     sdk: flutter
   stream_transform: ^2.0.0
