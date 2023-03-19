@@ -997,7 +997,7 @@ NSString *const errorMethod = @"error";
                    imageStreamHandler:(FLTImageStreamHandler *)imageStreamHandler {
   if (!_isStreamingImages) {
     FlutterEventChannel *eventChannel = [FlutterEventChannel
-        eventChannelWithName:@"plugins.flutter.io/camera_avfoundation/imageStream"
+        eventChannelWithName:@"plugins.flutter.io/camera/imageStream"
              binaryMessenger:messenger];
     FLTThreadSafeEventChannel *threadSafeEventChannel =
         [[FLTThreadSafeEventChannel alloc] initWithEventChannel:eventChannel];

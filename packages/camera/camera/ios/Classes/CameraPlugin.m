@@ -25,7 +25,7 @@
 
 + (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar> *)registrar {
   FlutterMethodChannel *channel =
-      [FlutterMethodChannel methodChannelWithName:@"plugins.flutter.io/camera_avfoundation"
+      [FlutterMethodChannel methodChannelWithName:@"plugins.flutter.io/camera"
                                   binaryMessenger:[registrar messenger]];
   CameraPlugin *instance = [[CameraPlugin alloc] initWithRegistry:[registrar textures]
                                                         messenger:[registrar messenger]];
@@ -49,7 +49,7 @@
 
 - (void)initDeviceEventMethodChannel {
   FlutterMethodChannel *methodChannel = [FlutterMethodChannel
-      methodChannelWithName:@"plugins.flutter.io/camera_avfoundation/fromPlatform"
+      methodChannelWithName:@"plugins.flutter.io/cameraPlugin/device"
             binaryMessenger:_messenger];
   _deviceEventMethodChannel =
       [[FLTThreadSafeMethodChannel alloc] initWithMethodChannel:methodChannel];
@@ -163,7 +163,7 @@
       };
       FlutterMethodChannel *methodChannel = [FlutterMethodChannel
           methodChannelWithName:
-              [NSString stringWithFormat:@"plugins.flutter.io/camera_avfoundation/camera%lu",
+              [NSString stringWithFormat:@"plugins.flutter.io/cameraPlugin/camera%lu",
                                          (unsigned long)cameraId]
                 binaryMessenger:_messenger];
       FLTThreadSafeMethodChannel *threadSafeMethodChannel =
