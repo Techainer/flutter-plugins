@@ -27,11 +27,11 @@ project.getTasks().withType(JavaCompile){
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion flutter.compileSdkVersion
+    compileSdkVersion 33
 
     defaultConfig {
-        targetSdkVersion flutter.targetSdkVersion
-        minSdkVersion flutter.minSdkVersion
+        targetSdkVersion 33
+        minSdkVersion 21
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     lintOptions {
