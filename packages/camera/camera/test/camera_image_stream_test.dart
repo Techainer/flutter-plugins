@@ -5,7 +5,6 @@
 import 'dart:async';
 
 import 'package:camera/camera.dart';
-import 'package:camera_platform_interface/camera_platform_interface.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'camera_test.dart';
