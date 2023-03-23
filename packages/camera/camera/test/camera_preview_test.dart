@@ -104,7 +104,7 @@ class FakeController extends ValueNotifier<CameraValue>
   Future<void> stopImageStream() async {}
 
   @override
-  Future<XFile> stopVideoRecording({bool? isStopStream = true}) async => XFile('');
+  Future<XFile> stopVideoRecording() async => XFile('');
 
   @override
   Future<XFile> takePicture() async => XFile('');

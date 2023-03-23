@@ -515,10 +515,8 @@ class CameraController extends ValueNotifier<CameraValue> {
 
   /// Stops the video recording and returns the file where it was saved.
   ///
-  /// You may optionally pass an [isStream] callback to also have the
-  /// video frames streamed to this callback.
   /// Throws a [CameraException] if the capture failed.
-  Future<XFile> stopVideoRecording({bool? isStopStream = true}) async {
+  Future<XFile> stopVideoRecording() async {
     _throwIfNotInitialized('stopVideoRecording');
     if (!value.isRecordingVideo) {
       throw CameraException(
@@ -526,17 +524,17 @@ class CameraController extends ValueNotifier<CameraValue> {
         'stopVideoRecording was called when no video is recording.',
       );
     }
-    
-    if (isStopStream??false && value.isStreamingImages) {
+
+    if (value.isStreamingImages) {
       stopImageStream();
     }
 
     try {
       final XFile file =
-          await CameraPlatform.instance.stopVideoRecording(_cameraId, isStopStream??false);
+          await CameraPlatform.instance.stopVideoRecording(_cameraId);
       value = value.copyWith(
         isRecordingVideo: false,
-        recordingOrientation: const Optional<DeviceOrientation>.absent()
+        recordingOrientation: const Optional<DeviceOrientation>.absent(),
       );
       return file;
     } on PlatformException catch (e) {

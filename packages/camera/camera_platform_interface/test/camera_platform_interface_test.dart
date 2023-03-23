@@ -359,7 +359,7 @@ void main() {
 
       // Act & Assert
       expect(
-        () => cameraPlatform.stopVideoRecording(1, true),
+        () => cameraPlatform.stopVideoRecording(1),
         throwsUnimplementedError,
       );
     });

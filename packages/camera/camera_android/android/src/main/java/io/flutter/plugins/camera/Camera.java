@@ -527,13 +527,11 @@ class Camera
     }
   }
 
-  private void startCapture(boolean record, boolean stream, boolean isRecordAfterStop) throws CameraAccessException {
+  private void startCapture(boolean record, boolean stream) throws CameraAccessException {
     List<Surface> surfaces = new ArrayList<>();
     Runnable successCallback = null;
-    if (record||isRecordAfterStop){
-      surfaces.add(mediaRecorder.getSurface());
-    }
     if (record) {
+      surfaces.add(mediaRecorder.getSurface());
       successCallback = () -> mediaRecorder.start();
     }
     if (stream) {
@@ -752,19 +750,17 @@ class Camera
             dartMessenger.error(flutterResult, errorCode, errorMessage, null));
   }
 
-  EventChannel imageStreamChannelCache;
   public void startVideoRecording(
       @NonNull Result result, @Nullable EventChannel imageStreamChannel) {
     prepareRecording(result);
 
     if (imageStreamChannel != null) {
-      imageStreamChannelCache =imageStreamChannel;
       setStreamHandler(imageStreamChannel);
     }
     initialCameraFacing = cameraProperties.getLensFacing();
     recordingVideo = true;
     try {
-      startCapture(true, imageStreamChannel != null,false);
+      startCapture(true, imageStreamChannel != null);
       result.success(null);
     } catch (CameraAccessException e) {
       recordingVideo = false;
@@ -780,7 +776,7 @@ class Camera
     }
   }
 
-  public void stopVideoRecording(@NonNull final Result result, boolean isStopStream) {
+  public void stopVideoRecording(@NonNull final Result result) {
     if (!recordingVideo) {
       result.success(null);
       return;
@@ -798,16 +794,8 @@ class Camera
     }
     mediaRecorder.reset();
     try {
-      if (imageStreamReader!= null && !isStopStream){
-        prepareRecording(result);
-        startCapture(false, imageStreamChannelCache != null, true);
-      } else {
-        startPreview();
-      }
-     
-    } catch (CameraAccessException
-             | IllegalStateException | InterruptedException
-            e) {
+      startPreview();
+    } catch (CameraAccessException | IllegalStateException | InterruptedException e) {
       result.error("videoRecordingFailed", e.getMessage(), null);
       return;
     }
@@ -1139,7 +1127,7 @@ class Camera
       throws CameraAccessException {
     setStreamHandler(imageStreamChannel);
 
-    startCapture(false, true, false);
+    startCapture(false, true);
     Log.i(TAG, "startPreviewWithImageStream");
   }
 
