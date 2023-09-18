@@ -10,7 +10,6 @@ import android.media.MediaRecorder;
 import android.os.Build;
 import androidx.annotation.NonNull;
 import java.io.IOException;
-import android.util.Log;
 
 public class MediaRecorderBuilder {
   @SuppressWarnings("deprecation")
@@ -29,19 +28,19 @@ public class MediaRecorderBuilder {
   private int mediaOrientation;
 
   public MediaRecorderBuilder(
-      @NonNull CamcorderProfile camcorderProfile, @NonNull String outputFilePath) {
+          @NonNull CamcorderProfile camcorderProfile, @NonNull String outputFilePath) {
     this(camcorderProfile, outputFilePath, new MediaRecorderFactory());
   }
 
   public MediaRecorderBuilder(
-      @NonNull EncoderProfiles encoderProfiles, @NonNull String outputFilePath) {
+          @NonNull EncoderProfiles encoderProfiles, @NonNull String outputFilePath) {
     this(encoderProfiles, outputFilePath, new MediaRecorderFactory());
   }
 
   MediaRecorderBuilder(
-      @NonNull CamcorderProfile camcorderProfile,
-      @NonNull String outputFilePath,
-      MediaRecorderFactory helper) {
+          @NonNull CamcorderProfile camcorderProfile,
+          @NonNull String outputFilePath,
+          MediaRecorderFactory helper) {
     this.outputFilePath = outputFilePath;
     this.camcorderProfile = camcorderProfile;
     this.encoderProfiles = null;
@@ -49,9 +48,9 @@ public class MediaRecorderBuilder {
   }
 
   MediaRecorderBuilder(
-      @NonNull EncoderProfiles encoderProfiles,
-      @NonNull String outputFilePath,
-      MediaRecorderFactory helper) {
+          @NonNull EncoderProfiles encoderProfiles,
+          @NonNull String outputFilePath,
+          MediaRecorderFactory helper) {
     this.outputFilePath = outputFilePath;
     this.encoderProfiles = encoderProfiles;
     this.camcorderProfile = null;
@@ -71,38 +70,21 @@ public class MediaRecorderBuilder {
   public MediaRecorder build() throws IOException, NullPointerException, IndexOutOfBoundsException {
     MediaRecorder mediaRecorder = recorderFactory.makeMediaRecorder();
 
-    // There's a fixed order that mediaRecorder expects. Only change these functions
-    // accordingly.
-    // You can find the specifics here:
-    // https://developer.android.com/reference/android/media/MediaRecorder.
-    if (enableAudio)
-      mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+    // There's a fixed order that mediaRecorder expects. Only change these functions accordingly.
+    // You can find the specifics here: https://developer.android.com/reference/android/media/MediaRecorder.
+    if (enableAudio) mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
     mediaRecorder.setVideoSource(MediaRecorder.VideoSource.SURFACE);
 
-    if (Build.VERSION.SDK_INT >= 31) {
+    if (Build.VERSION.SDK_INT >= 31 && encoderProfiles != null) {
       EncoderProfiles.VideoProfile videoProfile = encoderProfiles.getVideoProfiles().get(0);
       EncoderProfiles.AudioProfile audioProfile = encoderProfiles.getAudioProfiles().get(0);
 
-      // mediaRecorder.setOutputFormat(encoderProfiles.getRecommendedFileFormat());
-      Log.e("Hubert", "setOutputFormat: " + encoderProfiles.getRecommendedFileFormat());
       mediaRecorder.setOutputFormat(encoderProfiles.getRecommendedFileFormat());
       if (enableAudio) {
         mediaRecorder.setAudioEncoder(audioProfile.getCodec());
         mediaRecorder.setAudioEncodingBitRate(audioProfile.getBitrate());
         mediaRecorder.setAudioSamplingRate(audioProfile.getSampleRate());
       }
-
-      // for (int i = 0; i < encoderProfiles.getVideoProfiles().size(); i++) {
-      // EncoderProfiles.VideoProfile videoProfile1 =
-      // encoderProfiles.getVideoProfiles().get(i);
-      // Log.e("Hubert", "videoProfile1.getFrameRate() = " +
-      // videoProfile1.getFrameRate());
-      // }
-      // Log.e("Hubert", "HubertetVideoEncoder1 framerate = 5");
-      // Log.e("Hubert", "videoframerate = " + videoProfile.getFrameRate());
-      // Log.e("Hubert", "videoProfile.getBitrate() = " + videoProfile.getBitrate());
-      // Log.e("Hubert", "videoProfile.getCodec() = " + videoProfile.getCodec());
-      // // videoProfile.setFrameRate(5);
       mediaRecorder.setVideoEncoder(videoProfile.getCodec());
       mediaRecorder.setVideoEncodingBitRate(3000000);
       mediaRecorder.setVideoFrameRate(videoProfile.getFrameRate());
@@ -115,12 +97,11 @@ public class MediaRecorderBuilder {
         mediaRecorder.setAudioEncodingBitRate(camcorderProfile.audioBitRate);
         mediaRecorder.setAudioSamplingRate(camcorderProfile.audioSampleRate);
       }
-      // Log.e("Hubert", "setVideoEncoder2 framerate = 5");
       mediaRecorder.setVideoEncoder(camcorderProfile.videoCodec);
       mediaRecorder.setVideoEncodingBitRate(3000000);
       mediaRecorder.setVideoFrameRate(camcorderProfile.videoFrameRate);
       mediaRecorder.setVideoSize(
-          camcorderProfile.videoFrameWidth, camcorderProfile.videoFrameHeight);
+              camcorderProfile.videoFrameWidth, camcorderProfile.videoFrameHeight);
     }
 
     mediaRecorder.setOutputFile(outputFilePath);
